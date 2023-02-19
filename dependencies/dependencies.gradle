@@ -6,13 +6,16 @@ ext {
     core_ktx = '1.7.0'
     hilt_version = '2.44'
     retrofit_version = '2.9.0'
+    gson_version = '2.9.0'
+    gson_converter_factory = '2.9.0'
     libraries = [
             coreKTX          : "androidx.core:core-ktx:" + core_ktx,
             hilt             : "com.google.dagger:hilt-android:" + hilt_version,
             retrofit         : "com.squareup.retrofit2:retrofit:" + retrofit_version,
-            retrofitConverter: "com.squareup.retrofit2:converter-gson",
+            retrofitConverter: "com.squareup.retrofit2:converter-gson:"+gson_converter_factory,
             okhttp           : "com.squareup.okhttp3:okhttp",
-            okhttpinterceptor: "com.squareup.okhttp3:logging-interceptor"
+            okhttpinterceptor: "com.squareup.okhttp3:logging-interceptor",
+            gson : "com.google.code.gson:gson:"+gson_version
     ]
 
 }
