@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.plugin.serialization'
+}
+apply from:"${rootProject.projectDir}/dependencies/dependencies.gradle"
+android {
+    namespace 'com.example.home'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 24
+        targetSdk 33
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.4.3'
+    }
+}
+
+dependencies {
+
+
+    implementation project(':core:network')
+    implementation project(':core:uiresources')
+    implementation project(':core:model')
+    implementation project(':core:data')
+    implementation project(':core:domain')
+    def composeBom = platform('androidx.compose:compose-bom:2023.01.00')
+    implementation composeBom
+    androidTestImplementation composeBom
+    implementation libraries.coreKTX
+    implementation libraries.composeMaterial
+    implementation libraries.composeUIPreview
+    implementation libraries.composeUITooling
+    implementation libraries.composeViewModel
+    implementation libraries.composeLiveData
+    implementation libraries.composeUI
+    implementation libraries.navigationCompose
+    implementation libraries.hiltNavigation
+    implementation libraries.hilt
+    implementation libraries.collectState
+    implementation libraries.coil
+    implementation libraries.fonts
+    kapt "com.google.dagger:hilt-compiler:2.44.2"
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}

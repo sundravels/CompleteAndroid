@@ -10,27 +10,29 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
-import com.sundravels.androidbestpractices.ui.theme.AndroidBestPracticesTheme
-import kotlinx.coroutines.launch
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.uiresources.theme.AndroidBestPracticesTheme
+import com.sundravels.androidbestpractices.ui.AbpApp
+import com.sundravels.androidbestpractices.ui.AbpAppState
+import com.sundravels.androidbestpractices.ui.rememberNiaAppState
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        //handle splash screen transition
+        val splashScreen  = installSplashScreen()
         super.onCreate(savedInstanceState)
-
-
-        lifecycleScope.launch {
-
-        }
-
+        
         setContent {
             AndroidBestPracticesTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colors.surface
                 ) {
-
+                    AbpApp(rememberNiaAppState())
                 }
             }
         }

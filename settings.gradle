@@ -14,5 +14,12 @@ dependencyResolutionManagement {
 }
 rootProject.name = "AndroidBestPractices"
 include ':app'
-include ':networklayer'
-include ':network'
+include ':core'
+include ':feature'
+include ':feature:home'
+include ':feature:favourite'
+include ':core:network'
+include ':core:uiresources'
+include ':core:data'
+include ':core:model'
+include ':core:domain'
