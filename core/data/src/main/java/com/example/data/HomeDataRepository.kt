@@ -1,7 +1,7 @@
 package com.example.data
 
-import com.example.network.model.NetworkImage
+import com.example.model.data.UserImages
 
 interface HomeDataRepository {
-   val images:kotlinx.coroutines.flow.Flow<List<NetworkImage>>
+   val images:kotlinx.coroutines.flow.Flow<List<UserImages>>
 }

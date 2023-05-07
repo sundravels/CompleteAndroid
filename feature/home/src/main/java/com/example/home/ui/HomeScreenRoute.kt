@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.example.model.data.UserImages
 import com.example.network.model.NetworkImage
 import com.example.uiresources.theme.Purple500
 
@@ -46,7 +47,7 @@ internal fun HomeScreen(homeScreenUIState: HomeScreenUIState){
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreenList(
-    imageList: List<NetworkImage>,
+    imageList: List<UserImages>,
     modifier: Modifier = Modifier
 ) {
 
@@ -54,7 +55,7 @@ fun HomeScreenList(
         modifier = modifier.padding(10.dp), columns = StaggeredGridCells.Fixed(2), content = {
             items(imageList) {
                 homeGridItem(
-                    networkImage = it
+                    userImages = it
                 )
             }
         }, verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -64,9 +65,9 @@ fun HomeScreenList(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LazyStaggeredGridItemScope.homeGridItem(networkImage: NetworkImage) {
+fun LazyStaggeredGridItemScope.homeGridItem(userImages: UserImages) {
     Card(elevation = CardDefaults.elevatedCardElevation(), shape = RoundedCornerShape(5.dp)) {
-        AsyncImage(model = networkImage.urls.regular, contentDescription = null)
+        AsyncImage(model = userImages.regularUrl, contentDescription = null)
     }
 
 }

@@ -56,6 +56,7 @@ dependencies {
     implementation libraries.collectState
     implementation libraries.coil
     implementation libraries.fonts
+
     kapt "com.google.dagger:hilt-compiler:2.44.2"
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'

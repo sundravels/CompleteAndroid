@@ -57,6 +57,7 @@ dependencies {
     implementation project(':core:model')
     implementation project(':core:data')
     implementation project(':core:domain')
+    implementation project(':core:workmanager')
     implementation project(':feature:favourite')
     implementation project(':feature:home')
 
