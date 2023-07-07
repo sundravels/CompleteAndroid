@@ -5,8 +5,10 @@ import com.example.uiresources.R
 import androidx.compose.ui.graphics.vector.ImageVector
 
 object AppIcons {
-    val ic_home = R.drawable.ic_baseline_home_24
+    val ic_home = R.drawable.ic_outline_home_24
     val ic_favourites = R.drawable.ic_baseline_favorite_24
+    val is_outline_star = R.drawable.ic_baseline_star_border_24
+    val is_filled_star = R.drawable.ic_baseline_star_fille_24
 }
 
 sealed class Icon{

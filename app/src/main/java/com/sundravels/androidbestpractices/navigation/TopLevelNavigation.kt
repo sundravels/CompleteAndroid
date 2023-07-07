@@ -8,8 +8,7 @@ import com.example.uiresources.icon.Icon
 import com.sundravels.androidbestpractices.R
 
 
-enum class
-TopLevelNavigation(val text: Int, val icon: Icon, val route: String,val title:Int) {
+enum class TopLevelNavigation(val text: Int, val icon: Icon, val route: String,val title:Int) {
 
     HOME(
         text = R.string.str_home,

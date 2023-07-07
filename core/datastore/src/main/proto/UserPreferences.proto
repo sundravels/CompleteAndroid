@@ -1,0 +1,10 @@
+
+
+syntax = "proto3";
+
+option java_package="com.sundravels.androidbestpractices.core.datastore";
+message UserPreferences{
+
+  map<string,bool> favourites_id = 1;
+
+}

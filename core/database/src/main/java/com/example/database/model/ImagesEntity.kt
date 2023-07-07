@@ -3,7 +3,9 @@ package com.example.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Query
 import com.example.model.data.UserImages
+import java.util.concurrent.Flow
 
 @Entity(tableName = "images")
 data class ImagesEntity(
@@ -15,10 +17,13 @@ data class ImagesEntity(
 )
 
 
+
+
 fun ImagesEntity.asUserImage() = UserImages(
     id = this.id,
     name = this.name,
     fullUrl = this.fullUrl,
     regularUrl = this.regularUrl,
     smallUrl = this.smallUrl,
+    isFavourite = false
 )

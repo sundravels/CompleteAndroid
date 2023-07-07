@@ -5,6 +5,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.example.data.Synchronizer
 import com.example.data.repository.OfflineImagesRepository
+import com.example.data.repository.OfflineUserImagesRepository
 import com.example.database.AbpDatabase
 import com.example.network.AbpNetworkSource
 import com.example.workmanager.DelegatingWorker
@@ -21,14 +22,14 @@ import kotlinx.coroutines.withContext
 class AbpWorkManager @AssistedInject constructor(
     @Assisted appContext:Context,
     @Assisted workerParameters: WorkerParameters,
-    private val offlineImagesRepository: OfflineImagesRepository
+    private val offlineUserImagesRepository: OfflineUserImagesRepository
 ) :CoroutineWorker(
     appContext = appContext,
     workerParameters
 ),Synchronizer {
     override suspend fun doWork(): Result = withContext(Dispatchers.IO){
            val result = async {
-               offlineImagesRepository.sync()
+               offlineUserImagesRepository.sync()
             }
             result.await()
             if(result.isCompleted){
