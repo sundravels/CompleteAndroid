@@ -7,37 +7,42 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.example.favourite.FavouritesViewModel
-import com.example.model.data.UserImages
+import com.example.model.data.DessertImages
 import com.example.uiresources.components.ImageFeed
 import com.example.uiresources.components.UIState
 import com.example.uiresources.theme.Purple500
+import com.openglsample.details.navigation.navigateToDetailScreen
 
 
 @Composable
-fun FavouriteScreenRoute(favouritesViewModel: FavouritesViewModel = hiltViewModel()) {
+fun FavouriteScreenRoute(favouritesViewModel: FavouritesViewModel = hiltViewModel(), navHostController: NavHostController) {
     val favouriteScreenState by favouritesViewModel.favouriteState.collectAsStateWithLifecycle()
-    FavouriteScreen(favouriteScreenState, favourite = favouritesViewModel::updateFavourites)
+    FavouriteScreen(favouriteScreenState, favourite = favouritesViewModel::updateFavourites){
+     navHostController.navigateToDetailScreen()
+    }
 }
 
 @Composable
-internal fun FavouriteScreen(favouriteScreenState: UIState,favourite: (String, Boolean) -> Unit) {
+internal fun FavouriteScreen(favouriteScreenState: UIState,favourite: (String, Boolean) -> Unit,detailFn:(String?)->Unit) {
     when(favouriteScreenState){
         is UIState.Loading,UIState.Error -> {
             CircularProgressIndicator(color = Purple500)
         }
         is UIState.Success ->{
-            HomeScreenList(imageList = favouriteScreenState.data, favourite = favourite)
+            HomeScreenList(imageList = favouriteScreenState.data, favourite = favourite, detailFn =detailFn)
         }
     }
 }
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreenList(
-    imageList: List<UserImages>,
+    imageList: List<DessertImages>,
     modifier: Modifier = Modifier,
-    favourite:(String,Boolean)->Unit
+    favourite:(String,Boolean)->Unit,
+    detailFn:(String?)->Unit
 ) {
-    ImageFeed(modifier = modifier, column = 2, imageList = imageList , favourite = favourite)
+    ImageFeed(modifier = modifier, column = 2, imageList = imageList , favourite = favourite,detailFn)
 }
 

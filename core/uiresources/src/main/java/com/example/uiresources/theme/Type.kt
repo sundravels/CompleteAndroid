@@ -20,5 +20,10 @@ val Typography = Typography(
         fontFamily = fontFamily,
         fontSize = 22.sp
 
+    ),
+    bodyMedium = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontFamily = fontFamily,
+        fontSize = 18.sp
     )
 )

@@ -1,19 +1,18 @@
 package com.example.database.dao
 
 import androidx.room.*
-import com.example.database.model.ImagesEntity
-import com.example.model.data.UserImages
+import com.example.database.model.DessertsEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ImagesDao {
     @Insert
-    fun insertAll(vararg imagesEntity: ImagesEntity)
+    fun insertAll(vararg dessertsEntity: DessertsEntity)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(imagesEntity: ImagesEntity)
+    fun insert(dessertsEntity: DessertsEntity)
 
     @Query("SELECT * FROM images WHERE CASE WHEN :favouriteIds THEN id in (:favouritesList) ELSE 1 END")
     fun getAllImages(favouriteIds:Boolean = false,
-                     favouritesList:Set<String>): Flow<List<ImagesEntity>>
+                     favouritesList:Set<String>): Flow<List<DessertsEntity>>
 }

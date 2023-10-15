@@ -36,6 +36,7 @@ dependencies {
     implementation composeBom
     androidTestImplementation composeBom
     implementation project((":core:model"))
+    implementation project((":core:utilities"))
     implementation libraries.coreKTX
     implementation libraries.composeMaterial
     implementation libraries.composeUIPreview

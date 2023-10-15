@@ -3,12 +3,8 @@ package com.example.favourite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.repository.ImagesQuery
-import com.example.data.repository.ImagesRepository
-import com.example.data.repository.UserDataRepository
+import com.example.data.repository.DessertsRepository
 import com.example.domain.GetUserImageUseCase
-import com.example.domain.state.HomeUiState
-import com.example.model.data.UserData
-import com.example.model.data.UserImages
 import com.example.uiresources.components.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,10 +15,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavouritesViewModel @Inject constructor(
-    private val imagesRepository: ImagesRepository,
+    private val dessertsRepository: DessertsRepository,
     private val getUserImageUseCase: GetUserImageUseCase
 ) : ViewModel() {
-    private val userData = imagesRepository.getImages()
+    private val userData = dessertsRepository.getImages()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val favouriteState: StateFlow<UIState> = userData.filterNot {
@@ -39,7 +35,7 @@ class FavouritesViewModel @Inject constructor(
 
     fun updateFavourites(id: String, isAdded: Boolean) {
         viewModelScope.launch {
-            imagesRepository.addToFavourites(id = id, isFavourites = isAdded)
+            dessertsRepository.addToFavourites(id = id, isFavourites = isAdded)
         }
     }
 

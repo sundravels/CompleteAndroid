@@ -1,11 +1,9 @@
 package com.example.data.di
 
-import com.example.data.repository.ImagesRepository
-import com.example.data.repository.OfflineImagesRepository
-import com.example.data.repository.OfflineUserImagesRepository
-import com.example.data.repository.UserDataRepository
+import com.example.data.repository.*
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
@@ -13,14 +11,13 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 interface RepositoryModule {
 
-//    @Binds
-//    fun homeDataRepositoryModule(
-//        getHomeDataRepository: GetHomeDataRepository
-//    ):HomeDataRepository
-
     @Binds
-    fun imagesRepositoryModule(offlineImagesRepository: OfflineImagesRepository):ImagesRepository
+    fun imagesRepositoryModule(offlineImagesRepository: OfflineDessertsRepository):DessertsRepository
 
     @Binds
     fun userImagesRepository(offlineUserImagesRepository: OfflineUserImagesRepository):UserDataRepository
+
+    @Binds
+    fun dessertLookUpRepository(dessertsRepository: DessertDetailsRepository):DessertLookUpRepository
 }
+

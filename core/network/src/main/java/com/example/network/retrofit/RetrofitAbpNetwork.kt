@@ -1,10 +1,9 @@
 package com.example.network.retrofit
 
-import android.util.Log
 import com.example.network.AbpNetworkSource
-import com.example.network.model.NetworkImage
+import com.example.network.model.MealLookUp
+import com.example.network.model.Meals
 import retrofit2.Retrofit
-import retrofit2.create
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,6 +13,8 @@ class RetrofitAbpNetwork @Inject constructor(private val retrofit: Retrofit):Abp
 
     private val retrofitAbpNetworkApiInterface = retrofit.create(RetrofitAbpNetworkApiInterface::class.java)
 
-    override suspend fun getImages(): List<NetworkImage> = retrofitAbpNetworkApiInterface.getImages()
+    override suspend fun getMeals(): Meals = retrofitAbpNetworkApiInterface.getImages()
+
+    override suspend fun getMealLookUp(id:String):MealLookUp = retrofitAbpNetworkApiInterface.getDetails(id)
 
 }

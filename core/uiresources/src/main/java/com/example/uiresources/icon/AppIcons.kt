@@ -9,6 +9,7 @@ object AppIcons {
     val ic_favourites = R.drawable.ic_baseline_favorite_24
     val is_outline_star = R.drawable.ic_baseline_star_border_24
     val is_filled_star = R.drawable.ic_baseline_star_fille_24
+    val bg_tempo = androidx.constraintlayout.widget.R.drawable.tooltip_frame_light
 }
 
 sealed class Icon{

@@ -1,6 +1,6 @@
 package com.example.uiresources.components
 
-import com.example.model.data.UserImages
+import com.example.model.data.DessertImages
 
 
 sealed interface UIState{
@@ -9,5 +9,5 @@ sealed interface UIState{
 
     object Error:UIState
 
-    data class Success(val data:List<UserImages>):UIState
+    data class Success(val data:List<DessertImages>):UIState
 }

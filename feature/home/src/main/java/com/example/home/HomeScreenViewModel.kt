@@ -3,9 +3,9 @@ package com.example.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.repository.ImagesQuery
-import com.example.data.repository.ImagesRepository
+import com.example.data.repository.DessertsRepository
 import com.example.domain.GetUserImageUseCase
-import com.example.model.data.UserImages
+import com.example.model.data.DessertImages
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -15,12 +15,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    private val imagesRepository: ImagesRepository,
-private val getUserImageUseCase: GetUserImageUseCase) :
+    private val dessertsRepository: DessertsRepository,
+    private val getUserImageUseCase: GetUserImageUseCase) :
     ViewModel() {
-       private val imagesData =  imagesRepository.getImages()
+       private val imagesData =  dessertsRepository.getImages()
 
-    val feedState = imagesRepository.mapToUserImages(getUserImageUseCase).
+    val feedState = dessertsRepository.mapToUserImages(getUserImageUseCase).
          map(HomeScreenUIState::Shown)
         .stateIn(
         scope = viewModelScope,
@@ -30,13 +30,13 @@ private val getUserImageUseCase: GetUserImageUseCase) :
 
     fun addToFavourites(id:String,isFavourite:Boolean){
         viewModelScope.launch {
-            imagesRepository.addToFavourites(id,isFavourite)
+            dessertsRepository.addToFavourites(id,isFavourite)
         }
     }
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun ImagesRepository.mapToUserImages(
+    private fun DessertsRepository.mapToUserImages(
         getUserImageUseCase: GetUserImageUseCase
-    ):Flow<List<UserImages>> = imagesData.map {
+    ):Flow<List<DessertImages>> = imagesData.map {
         it.favouriteImagesIds.ifEmpty {
             null
         }
