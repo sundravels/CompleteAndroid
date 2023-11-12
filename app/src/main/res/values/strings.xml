@@ -3,4 +3,5 @@
     <string name="str_home">Home</string>
     <string name="str_favourites">Favourites</string>
     <string name="title_core">Core</string>
+    <string name="settings">Settings</string>
 </resources>

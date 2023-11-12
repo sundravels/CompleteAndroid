@@ -10,11 +10,12 @@ import javax.inject.Inject
 class UserPreferenceDataSource @Inject constructor(private val dataStore: DataStore<UserPreferences>) {
 
 
- val data = dataStore.data.map {
-             UserData(favouriteImagesIds = it.favouritesIdMap.keys)
- }
+    val data = dataStore.data.map {
+        UserData(favouriteImagesIds = it.favouritesIdMap.keys)
+    }
 
-    suspend fun setFavourites(name:String,isFavourites:Boolean){
+
+    suspend fun setFavourites(name: String, isFavourites: Boolean) {
         dataStore.updateData {
             with(it.toBuilder()) {
                 if (isFavourites) {

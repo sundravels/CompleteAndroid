@@ -7,5 +7,6 @@ import com.sundravels.androidbestpractices.navigation.TopLevelNavigation
 
 val topLevelNavigationList = listOf<TopLevelNavigation>(
     TopLevelNavigation.HOME,
-    TopLevelNavigation.FAVOURITES
+    TopLevelNavigation.FAVOURITES,
+
 )

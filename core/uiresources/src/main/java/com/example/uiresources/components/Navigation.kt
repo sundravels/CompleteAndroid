@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun AbpBottomNavigationBar(
     modifier: Modifier = Modifier,
-    containerColor: Color = NavigationBarDefaults.containerColor,
-    contentColor: Color = MaterialTheme.colorScheme.contentColorFor(containerColor),
+    containerColor: Color=Color.Transparent,
+    contentColor: Color=Color.Transparent,
     content: @Composable RowScope.() -> Unit
 ) {
 

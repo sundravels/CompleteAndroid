@@ -39,6 +39,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.example.uiresources.R
 import com.example.uiresources.theme.AndroidBestPracticesTheme
+import com.example.uiresources.theme.BackgroundShade
 import com.sundravels.androidbestpractices.ui.AbpApp
 import com.sundravels.androidbestpractices.ui.AbpAppState
 import com.sundravels.androidbestpractices.ui.rememberNiaAppState
@@ -56,7 +57,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.surface
+                    color = BackgroundShade
                 ) {
                     AbpApp(rememberNiaAppState())
                 }

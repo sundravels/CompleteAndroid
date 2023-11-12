@@ -21,7 +21,7 @@ private val DarkColorPalette = darkColorScheme(
     onSurfaceVariant = PurpleGray80,
     inverseSurface = DarkPurpleGray90,
     inverseOnSurface = DarkPurpleGray10,
-    outline = PurpleGray60,
+    outline = PurpleGray90,
 
 )
 
@@ -31,10 +31,11 @@ private val LightColorPalette = lightColorScheme(
     secondary = Teal200 ,
     background = Color.White,
     surface = Color.White,
+    surfaceVariant=Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
-    outline = Color.White
+    outline = PurpleGray90
 )
 
 @Composable

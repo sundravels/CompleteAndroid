@@ -2,29 +2,26 @@ package com.sundravels.androidbestpractices.ui
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavType
@@ -33,19 +30,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.favourite.navigation.favourite_screen_route
 import com.example.favourite.ui.FavouriteScreenRoute
-import com.example.home.HomeScreenRoute
 import com.example.home.navigation.homeScreenRoute
+import com.example.home.ui.HomeScreenRoute
 import com.example.uiresources.components.AbpBottomNavigationBar
 import com.example.uiresources.components.AbpBottomNavigationBarItem
 import com.example.uiresources.icon.Icon
-import com.example.uiresources.theme.Purple200
+import com.example.uiresources.theme.*
 import com.openglsample.details.navigation.detailScreenMealId
 import com.openglsample.details.navigation.detailScreenRoute
 import com.openglsample.details.ui.DetailScreenRoute
 import com.sundravels.androidbestpractices.navigation.TopLevelNavigation
-import kotlin.math.roundToInt
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AbpApp(abpAppState: AbpAppState) {
@@ -64,9 +61,7 @@ fun AbpApp(abpAppState: AbpAppState) {
                 val delta = available.y
 
                 val newOffset = toolBarOffsetHeightPx + delta
-                Log.v("newOffset", "${newOffset}:${delta}")
                 toolBarOffsetHeightPx = newOffset.coerceIn(-topAppBarHeight, 0f)
-                Log.v("TAGtoolBarOffsetHeightPx","${toolBarOffsetHeightPx}")
 
                 // here's the catch: let's pretend we consumed 0 in any case, since we want
                 // LazyColumn to scroll anyway for good UX
@@ -87,20 +82,23 @@ fun AbpApp(abpAppState: AbpAppState) {
 
 
     Scaffold(
-        backgroundColor = MaterialTheme.colorScheme.background,
         topBar = {
             //to manage empty space of topbar, when scrolled
-            if(toolBarOffsetHeightPx in -10f..0f){
-                AbpTopBar(abpAppState, toolBarOffsetHeightPx)
+            if (toolBarOffsetHeightPx in -10f..0f) {
+                AbpTopBar(abpAppState)
             }
         },
         bottomBar = {
             AbpNavigation(abpAppState::navigate, abpAppState.currentDestination)
-        }, modifier = Modifier.nestedScroll(nestedScrollConnection)
+        }, modifier = Modifier
+            .nestedScroll(nestedScrollConnection),
+        containerColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.background
     ) {
         NavHost(
             navController = abpAppState.navController,
-            startDestination = homeScreenRoute
+            startDestination = homeScreenRoute,
+            modifier = Modifier.padding(it)
         ) {
             composable(homeScreenRoute) {
                 HomeScreenRoute(navHostController = abpAppState.navController)
@@ -110,9 +108,12 @@ fun AbpApp(abpAppState: AbpAppState) {
             }
             composable(
                 "${detailScreenRoute}/{${detailScreenMealId}}",
-                arguments = listOf(navArgument(detailScreenMealId) { type = NavType.StringType })
+                arguments = listOf(navArgument(detailScreenMealId) { type = NavType.StringType }
+                )
             ) {
-                DetailScreenRoute("${it.arguments?.getString(detailScreenMealId)}")
+                DetailScreenRoute(meal_id = "${it.arguments?.getString(detailScreenMealId)}") {
+                    abpAppState.navController.popBackStack()
+                }
             }
         }
     }
@@ -121,39 +122,47 @@ fun AbpApp(abpAppState: AbpAppState) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AbpTopBar(
-    abpAppState: AbpAppState,
-    toolBarOffsetHeightPx: Float
+    abpAppState: AbpAppState
 ) {
     val currentDestination = abpAppState.destination
     if (currentDestination != null) {
-        TopAppBar(
-            title = {
+
+        TextField(
+            value = "",
+            onValueChange = {
+
+            },
+            leadingIcon = {
+                Icon(Icons.Default.Search, contentDescription = null, tint = Purple500)
+            },
+            readOnly = true,
+            placeholder = {
                 Text(
-                    stringResource(id = currentDestination.title), maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        color = Color.Black,
-                        textAlign = TextAlign.Start
+                    text = "Search 'Recipes'",
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontSize = 16.sp
                     )
                 )
             },
-            actions = {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painterResource(id = com.example.uiresources.R.drawable.baseline_settings_24),
-                        contentDescription = null
-                    )
-                }
-            },
-            modifier = Modifier.offset {
-                IntOffset(x = 0, y = toolBarOffsetHeightPx.roundToInt())
-            },
-            navigationIcon = {
-
-            },
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = Purple200.copy(alpha = 0.1f)
-            )
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .background(MaterialTheme.colorScheme.background)
+                .padding(start = 10.dp, end = 10.dp, top = 15.dp, bottom = 10.dp)
+                .shadow(
+                    elevation = 8.dp,
+                    shape = RoundedCornerShape(10.dp),
+                    ambientColor = MaterialTheme.colorScheme.onBackground
+                ),
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                focusedIndicatorColor = MaterialTheme.colorScheme.background,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.background,
+                disabledIndicatorColor = MaterialTheme.colorScheme.background
+            ),
+            enabled = false
         )
     }
 }
@@ -162,47 +171,52 @@ fun AbpTopBar(
 @Composable
 fun AbpNavigation(navigate: (TopLevelNavigation) -> Unit, currentDestination: NavDestination?) {
 
-    AbpBottomNavigationBar(
-        modifier = Modifier.height(60.dp),
-        containerColor = MaterialTheme.colorScheme.background,
-        contentColor = MaterialTheme.colorScheme.outline
+    if (currentDestination.isTopLevelDestinationInHierarchy(TopLevelNavigation.HOME) || currentDestination.isTopLevelDestinationInHierarchy(
+            TopLevelNavigation.FAVOURITES
+        )
     ) {
+        AbpBottomNavigationBar(content = {
+            topLevelNavigationList.forEach { bottomBarDestination ->
 
-        topLevelNavigationList.forEach { bottomBarDestination ->
+                AbpBottomNavigationBarItem(
+                    icon = {
+                        when (bottomBarDestination.icon) {
+                            is Icon.DrawableResource -> Icon(
+                                painterResource(id = bottomBarDestination.icon.id),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
+                            is Icon.ImageVectors -> Icon(
+                                painterResource(id = 0),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(id = bottomBarDestination.text),
+                            style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onBackground)
+                        )
 
-            AbpBottomNavigationBarItem(
-                icon = {
-                    when (bottomBarDestination.icon) {
-                        is Icon.DrawableResource -> Icon(
-                            painterResource(id = bottomBarDestination.icon.id),
-                            contentDescription = null,
-                            tint = if (currentDestination.isTopLevelDestinationInHierarchy(
-                                    bottomBarDestination
-                                )
-                            ) Purple200 else Color.Black
-                        )
-                        is Icon.ImageVectors -> Icon(
-                            painterResource(id = 0),
-                            contentDescription = null,
-                            tint = if (currentDestination.isTopLevelDestinationInHierarchy(
-                                    bottomBarDestination
-                                )
-                            ) Purple200 else Color.Black
-                        )
-                    }
-                },
-                label = { },
-                selected = currentDestination.isTopLevelDestinationInHierarchy(bottomBarDestination),
-                onClick = {
-                    navigate(bottomBarDestination)
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color.White,
-                    selectedIconColor = Purple200,
-                    unselectedIconColor = Color.Unspecified
+                    },
+                    selected = currentDestination.isTopLevelDestinationInHierarchy(
+                        bottomBarDestination
+                    ),
+                    onClick = {
+                        navigate(bottomBarDestination)
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = Purple200,
+                        selectedIconColor = MaterialTheme.colorScheme.onBackground,
+                        selectedTextColor = MaterialTheme.colorScheme.onBackground,
+                        unselectedIconColor = MaterialTheme.colorScheme.onBackground,
+                        unselectedTextColor = MaterialTheme.colorScheme.onBackground
+                    )
+
                 )
-            )
-        }
+            }
+        })
     }
 }
 

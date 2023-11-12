@@ -20,5 +20,5 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun getDatabase(@ApplicationContext context: Context): AbpDatabase = Room.databaseBuilder(context,AbpDatabase::class.java,
-        database_name).build()
+        database_name).fallbackToDestructiveMigration().build()
 }

@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface DessertsRepository{
 
-  fun getImages(): kotlinx.coroutines.flow.Flow<UserData>
+  fun getImages(): Flow<UserData>
   suspend fun addToFavourites(id:String,isFavourites:Boolean)
 }
