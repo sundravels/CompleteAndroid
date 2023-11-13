@@ -2,7 +2,7 @@ package com.example.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.repository.ImagesQuery
+import com.example.data.repository.DessertsImagesQuery
 import com.example.data.repository.DessertsRepository
 import com.example.domain.GetUserImageUseCase
 import com.example.model.data.DessertImages
@@ -41,7 +41,7 @@ class HomeScreenViewModel @Inject constructor(
             null
         }
     }.flatMapLatest {
-        getUserImageUseCase(ImagesQuery(null))
+        getUserImageUseCase(DessertsImagesQuery(null))
     }
 
 }

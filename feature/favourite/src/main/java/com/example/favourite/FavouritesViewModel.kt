@@ -2,7 +2,7 @@ package com.example.favourite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.repository.ImagesQuery
+import com.example.data.repository.DessertsImagesQuery
 import com.example.data.repository.DessertsRepository
 import com.example.domain.GetUserImageUseCase
 import com.example.uiresources.components.UIState
@@ -24,7 +24,7 @@ class FavouritesViewModel @Inject constructor(
     val favouriteState: StateFlow<UIState> = userData.filterNot {
         it.favouriteImagesIds.isEmpty()
     }.map {
-        getUserImageUseCase(ImagesQuery(it.favouriteImagesIds))
+        getUserImageUseCase(DessertsImagesQuery(it.favouriteImagesIds))
     }.flatMapLatest {
         it.map(UIState::Success)
     }.stateIn(

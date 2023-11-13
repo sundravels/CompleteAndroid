@@ -40,6 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.uiresources.R
 import com.example.uiresources.theme.AndroidBestPracticesTheme
 import com.example.uiresources.theme.BackgroundShade
+import com.example.uiresources.theme.DarkPurpleGray20
 import com.sundravels.androidbestpractices.ui.AbpApp
 import com.sundravels.androidbestpractices.ui.AbpAppState
 import com.sundravels.androidbestpractices.ui.rememberNiaAppState
@@ -57,7 +58,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = BackgroundShade
+                    color = DarkPurpleGray20
                 ) {
                     AbpApp(rememberNiaAppState())
                 }

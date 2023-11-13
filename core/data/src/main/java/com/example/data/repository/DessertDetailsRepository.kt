@@ -9,7 +9,6 @@ import javax.inject.Inject
 
 class DessertDetailsRepository @Inject constructor(
     private val abpNetworkSource: AbpNetworkSource,
-    private val offlineDessertsRepository: OfflineDessertsRepository,
 ) : DessertLookUpRepository {
     override suspend fun getDessertDetails(id: String): List<DessertLookUp> =
         abpNetworkSource.getMealLookUp(id).arrMealLookUpDetails.map(MealLookUpDetail::asDessertLookUp)

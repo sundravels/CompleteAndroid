@@ -1,7 +1,7 @@
 package com.sundravels.androidbestpractices.data
 
 import androidx.datastore.core.DataStore
-import com.example.model.data.UserData
+import com.example.model.data.FavouritesDesserts
 import com.sundravels.androidbestpractices.core.datastore.UserPreferencesOuterClass.UserPreferences
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -11,7 +11,7 @@ class UserPreferenceDataSource @Inject constructor(private val dataStore: DataSt
 
 
     val data = dataStore.data.map {
-        UserData(favouriteImagesIds = it.favouritesIdMap.keys)
+        FavouritesDesserts(favouriteImagesIds = it.favouritesIdMap.keys)
     }
 
 

@@ -140,7 +140,7 @@ fun AbpTopBar(
                 Text(
                     text = "Search 'Recipes'",
                     style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = MaterialTheme.colorScheme.outline,
                         fontSize = 16.sp
                     )
                 )
@@ -157,17 +157,16 @@ fun AbpTopBar(
                     ambientColor = MaterialTheme.colorScheme.onBackground
                 ),
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                focusedIndicatorColor = MaterialTheme.colorScheme.background,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.background,
-                disabledIndicatorColor = MaterialTheme.colorScheme.background
+                containerColor = MaterialTheme.colorScheme.onSecondary,
+                focusedIndicatorColor = MaterialTheme.colorScheme.onSecondary,
+                unfocusedIndicatorColor =MaterialTheme.colorScheme.onSecondary,
+                disabledIndicatorColor = MaterialTheme.colorScheme.onSecondary
             ),
             enabled = false
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AbpNavigation(navigate: (TopLevelNavigation) -> Unit, currentDestination: NavDestination?) {
 
@@ -175,7 +174,7 @@ fun AbpNavigation(navigate: (TopLevelNavigation) -> Unit, currentDestination: Na
             TopLevelNavigation.FAVOURITES
         )
     ) {
-        AbpBottomNavigationBar(content = {
+        AbpBottomNavigationBar( content = {
             topLevelNavigationList.forEach { bottomBarDestination ->
 
                 AbpBottomNavigationBarItem(

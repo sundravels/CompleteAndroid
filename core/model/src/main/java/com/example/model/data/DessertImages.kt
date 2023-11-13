@@ -9,11 +9,11 @@ data class DessertImages(
      var isFavourite:Boolean = false
 )
 
-fun List<DessertImages>.mapToUserImages(listFromDao: List<DessertImages>, userData: UserData) = map {
+fun List<DessertImages>.mapToUserImages(listFromDao: List<DessertImages>, favouritesDesserts: FavouritesDesserts) = map {
           DessertImages(strMeal = it.strMeal,
                strMealThumb = it.strMealThumb,
                idMeal = it.idMeal,
-               isFavourite = userData.favouriteImagesIds.contains(it.idMeal))
+               isFavourite = favouritesDesserts.favouriteImagesIds.contains(it.idMeal))
      }
 
 

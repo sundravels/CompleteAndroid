@@ -14,7 +14,7 @@ class OfflineUserImagesRepository @Inject constructor(
     private val imagesDao: ImagesDao,
     private val abpNetworkSource: AbpNetworkSource
 ) : UserDataRepository {
-    override  fun getImages(imagesQuery: ImagesQuery) = imagesDao.getAllImages(imagesQuery.bookmarkedIds?.isNotEmpty()?:false,imagesQuery.bookmarkedIds?: emptySet()).map {
+    override  fun getImages(dessertsImagesQuery: DessertsImagesQuery) = imagesDao.getAllImages(dessertsImagesQuery.bookmarkedIds?.isNotEmpty()?:false,dessertsImagesQuery.bookmarkedIds?: emptySet()).map {
         it.map(DessertsEntity::asUserImage)
     }
     override suspend fun syncWith(synchronizer: Synchronizer) = kotlin.runCatching {

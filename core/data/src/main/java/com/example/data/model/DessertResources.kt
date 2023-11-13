@@ -2,7 +2,6 @@ package com.example.data.model
 
 import com.example.database.model.DessertsEntity
 import com.example.model.data.DessertLookUp
-import com.example.model.data.UserData
 import com.example.network.model.MealLookUpDetail
 import com.example.network.model.MealsDetails
 

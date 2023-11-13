@@ -1,5 +1,5 @@
 package com.example.data.repository
 
-data class ImagesQuery(
+data class DessertsImagesQuery(
     val bookmarkedIds:Set<String>?=null
 )

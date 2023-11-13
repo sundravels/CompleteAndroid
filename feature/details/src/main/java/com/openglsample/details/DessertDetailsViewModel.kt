@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.repository.DessertLookUpRepository
 import com.example.data.repository.DessertsRepository
-import com.example.model.data.UserData
+import com.example.model.data.FavouritesDesserts
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ class DessertDetailsViewModel @Inject constructor(
         dessertsRepository.getImages().filterNot { it.favouriteImagesIds.isEmpty() }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = UserData(
+            initialValue = FavouritesDesserts(
                 setOf()
             )
         )
