@@ -1,6 +1,7 @@
 package com.example.uiresources.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -16,12 +17,12 @@ private val DarkColorPalette = darkColorScheme(
     background = DarkPurpleGray10,
     onBackground = DarkPurpleGray90,
     surface = DarkPurpleGray10,
-    onSurface = DarkPurpleGray90,
+    onSurface = DarkPurpleGray20,
     surfaceVariant = PurpleGray30,
     onSurfaceVariant = PurpleGray80,
     inverseSurface = DarkPurpleGray90,
     inverseOnSurface = DarkPurpleGray10,
-    outline = PurpleGray90,
+    outline = Gray,
 
 )
 
@@ -34,8 +35,8 @@ private val LightColorPalette = lightColorScheme(
     surfaceVariant=Color.White,
     onSecondary = Color.White,
     onBackground = Color.Black,
-    onSurface = Color.Black,
-    outline = PurpleGray90
+    onSurface = Color.White,
+    outline = Gray
 )
 
 @Composable

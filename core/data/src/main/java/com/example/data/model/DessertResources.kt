@@ -4,14 +4,16 @@ import com.example.database.model.DessertsEntity
 import com.example.model.data.DessertLookUp
 import com.example.network.model.MealLookUpDetail
 import com.example.network.model.MealsDetails
+import java.util.*
 
 
 fun MealsDetails.asEntity() = DessertsEntity(
     id = this.idMeal ?: "",
     strMeal = this.strMeal,
     strMealThumb = this.strMealThumb,
-
-    )
+    ratings = String.format("%.1f", randomRatings()).toFloat(),
+    likes =randomLikes()
+)
 
 fun MealLookUpDetail.asDessertLookUp() = DessertLookUp(
     idMeal = this.idMeal,
@@ -52,3 +54,6 @@ fun ArrayList<Pair<String?, String?>>.removeEmpty() =
     run { this.filter { !it.first.isNullOrEmpty() && !it.second.isNullOrEmpty() } }
 
 
+fun randomRatings() = Random().nextFloat() * (5.0f - 1.0f) + 1.0f
+
+fun randomLikes() = (1..10).random()

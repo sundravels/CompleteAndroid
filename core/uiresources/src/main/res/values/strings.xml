@@ -7,4 +7,6 @@
     <string name="str_instructions">Instructions</string>
     <string name="str_serving">1 serving</string>
     <string name="str_click_here_for_more_info">Click Here for more info</string>
+    <string name="highly_rated">Highly rated</string>
+    <string name="recommended_for_you">Recommended for you</string>
 </resources>

@@ -6,7 +6,7 @@ import com.example.database.dao.ImagesDao
 import com.example.database.model.DessertsEntity
 
 
-@Database(entities = [DessertsEntity::class], version = 2, exportSchema = false)
+@Database(entities = [DessertsEntity::class], version = 4, exportSchema = false)
 abstract class AbpDatabase:RoomDatabase(){
     abstract fun imagesDao():ImagesDao
 }

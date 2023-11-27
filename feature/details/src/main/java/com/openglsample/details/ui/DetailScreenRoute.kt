@@ -4,20 +4,18 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -41,10 +39,6 @@ import com.example.model.data.DessertLookUp
 import com.example.uiresources.R
 import com.example.uiresources.components.AbpTopBar
 import com.example.uiresources.dimen.Dimensions
-import com.example.uiresources.theme.DarkPurpleGray10
-import com.example.uiresources.theme.DarkPurpleGray90
-import com.example.uiresources.theme.DarkPurpleGray99
-import com.example.uiresources.theme.PurpleGray50
 import com.openglsample.details.DessertDetailsViewModel
 import com.openglsample.details.DetailScreenState
 import sundravels.samples.utilities.extensions.Empty
@@ -59,14 +53,20 @@ fun DetailScreenRoute(
     detailsViewModel.getDessertDetails(meal_id)
     val detailScreenState by detailsViewModel.arrDessertLookUpDetails.collectAsStateWithLifecycle()
     val isFavourite by detailsViewModel.isFavourite.collectAsStateWithLifecycle()
-    DetailScreen(detailScreenState, detailsViewModel::addToFavourites, isFavourite.favouriteImagesIds.contains(meal_id),backPress)
+
+    DetailScreen(
+        detailScreenState,
+        detailsViewModel::addToFavourites,
+        isFavourite.favouriteImagesIds.contains(meal_id),
+        backPress
+    )
 }
 
 @Composable
 internal fun DetailScreen(
     detailScreenState: DetailScreenState,
     addToFavourites: (String, Boolean) -> Unit,
-    isFavourite:Boolean,
+    isFavourite: Boolean,
     backPress: () -> Unit
 ) {
     when (detailScreenState) {
@@ -87,7 +87,7 @@ internal fun DetailScreen(
 fun IngredientsDetailContent(
     data: List<DessertLookUp>,
     addToFavourites: (String, Boolean) -> Unit,
-    isFavourite:Boolean,
+    isFavourite: Boolean,
     backPress: () -> Unit
 ) {
 
@@ -98,13 +98,18 @@ fun IngredientsDetailContent(
         (Dimensions.tobAppbar.toPx() / 2) + ((Dimensions.tobAppbar.toPx() / 2) / 2)
     }
     val scrollOffset = remember { mutableStateOf(0f) }
+    val showScrollToTopButton by remember {
+        derivedStateOf {
+            stateList.firstVisibleItemIndex <= 0
+        }
+    }
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 // try to consume before LazyColumn to collapse toolbar if needed, hence pre-scroll
                 val delta = available.y
                 val offset = scrollOffset.value + delta
-                if (stateList.firstVisibleItemIndex <= 0) {
+                if (showScrollToTopButton) {
                     scrollOffset.value = offset.coerceIn(-scrollOffsetPx, 0f)
                 }
                 return Offset.Zero
@@ -120,7 +125,12 @@ fun IngredientsDetailContent(
     ) {
 
         //toolbar
-        AbpTopBar(dessertLookUp = data[0], backPress = backPress, addToFavourites = addToFavourites, isFavourite = isFavourite)
+        AbpTopBar(
+            dessertLookUp = data[0],
+            backPress = backPress,
+            addToFavourites = addToFavourites,
+            isFavourite = isFavourite
+        )
 
         RecipeToolbarTitle(data[0].strMeal ?: String.Empty(), scrollOffset.value)
 
@@ -174,8 +184,17 @@ fun IngredientsDetailContent(
             item {
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.ten_dp)))
             }
-            items(data[0].ingredientsList) {
-                RecipeIngredients(it)
+            item {
+                LazyRow(
+                    content = {
+                        items(data[0].ingredientsList) {
+                            RecipeIngredients(it)
+                        }
+                    },
+                    contentPadding = PaddingValues(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                )
+
             }
             item {
                 data[0].strInstructions?.let { RecipeInstructions(strInstructions = it) }
@@ -194,20 +213,24 @@ fun RecipeTitle(str: String, style: TextStyle, modifier: Modifier = Modifier) {
 
 @Composable
 fun RecipeToolbarTitle(toolbarTitle: String, offset: Float) {
-    Text(
-        text = toolbarTitle,
-        maxLines = 1,
-        color =MaterialTheme.colorScheme.onBackground,
-        overflow = TextOverflow.Ellipsis,
-        style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onBackground),
-        modifier = Modifier
-            .padding(top = with(LocalDensity.current) {
-                Log.v("TAGToolbarTitle", "${offset}:${Dimensions.tobAppbar + offset.toDp()}")
-                Dimensions.tobAppbar + offset.toDp()
-            }, start = dimensionResource(id = R.dimen.sixty_dp))
-            .fillMaxWidth(),
-        textAlign = TextAlign.Start
-    )
+    Row(modifier = Modifier.fillMaxWidth()){
+        Text(
+            text = toolbarTitle,
+            maxLines = 1,
+            color = MaterialTheme.colorScheme.onBackground,
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onBackground),
+            modifier = Modifier
+                .padding(top = with(LocalDensity.current) {
+                    Log.v("TAGToolbarTitle", "${offset}:${Dimensions.tobAppbar + offset.toDp()}")
+                    Dimensions.tobAppbar + offset.toDp()
+                }, start = dimensionResource(id = R.dimen.sixty_dp))
+                .fillMaxWidth().weight(1f),
+            textAlign = TextAlign.Start
+        )
+        Spacer(modifier = Modifier.width(50.dp))
+    }
+
 }
 
 @Composable
@@ -236,47 +259,47 @@ fun RecipeDetails(recipeName: String, recipeType: String) {
 
 @Composable
 fun DetailImage(image: String) {
-    Box{
-        AsyncImage(
-            model = image,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxSize()
-                .height(Dimensions.bannerImageHeight)
-        )
-        Row(modifier = Modifier.background(color = Color.Black.copy(alpha = 0.5f)).align(Alignment.BottomCenter).padding(horizontal = 10.dp, vertical = 10.dp)) {
-            Text(
-                text = stringResource(R.string.str_click_here_for_more_info),
-                style = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
-                modifier = Modifier.weight(1f)
-            )
-            Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = null, tint = Color.White)
-        }
-    }
-
+    AsyncImage(
+        model = image,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .fillMaxSize()
+            .height(Dimensions.bannerImageHeight)
+    )
 }
 
 @Composable
 fun RecipeIngredients(pair: Pair<String?, String?>) {
-    Column(modifier = Modifier.padding(start = 10.dp, top = 10.dp, end = 10.dp)) {
-        Row {
+    Card(
+        modifier = Modifier
+            .height(60.dp)
+            .shadow(elevation = 5.dp, shape = RoundedCornerShape(10.dp)),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.onSurface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        shape = RoundedCornerShape(10.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             Text(
                 text = pair.first ?: String.Empty(),
-                modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Normal, color = MaterialTheme.colorScheme.onBackground)
+                style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground)
             )
             Text(
                 text = pair.second ?: String.Empty(),
-                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground)
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
             )
         }
-        Spacer(modifier = Modifier.height(5.dp))
-        Divider(
-            modifier = Modifier.height(0.5.dp),
-            thickness = 0.5.dp,
-            color = MaterialTheme.colorScheme.outline
-        )
     }
 }
 
@@ -284,18 +307,24 @@ fun RecipeIngredients(pair: Pair<String?, String?>) {
 fun RecipeInstructions(strInstructions: String) {
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
-            .padding(PaddingValues(vertical = 15.dp))
+            .padding(PaddingValues(horizontal = 5.dp, vertical = 10.dp))
     ) {
         RecipeTitle(
-            str = stringResource(id = R.string.str_instructions).uppercase(java.util.Locale.getDefault()),
+            str = stringResource(id = R.string.str_instructions),
             MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onBackground),
             Modifier.padding(PaddingValues(10.dp))
         )
         Text(
             text = strInstructions,
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Normal, color = MaterialTheme.colorScheme.onBackground),
-            modifier = Modifier.padding(horizontal = 10.dp)
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Normal,
+                color = MaterialTheme.colorScheme.onBackground
+            ),
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .fillMaxWidth()
         )
     }
 }

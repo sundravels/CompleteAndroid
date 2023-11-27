@@ -2,26 +2,21 @@ package com.sundravels.androidbestpractices.ui
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavType
@@ -31,7 +26,10 @@ import androidx.navigation.navArgument
 import com.example.favourite.navigation.favourite_screen_route
 import com.example.favourite.ui.FavouriteScreenRoute
 import com.example.home.navigation.homeScreenRoute
+import com.example.home.navigation.seeAllScreenRoute
+import com.example.home.navigation.seeAllType
 import com.example.home.ui.HomeScreenRoute
+import com.example.home.ui.SeeAllScreenRoute
 import com.example.uiresources.components.AbpBottomNavigationBar
 import com.example.uiresources.components.AbpBottomNavigationBarItem
 import com.example.uiresources.icon.Icon
@@ -40,6 +38,8 @@ import com.openglsample.details.navigation.detailScreenMealId
 import com.openglsample.details.navigation.detailScreenRoute
 import com.openglsample.details.ui.DetailScreenRoute
 import com.sundravels.androidbestpractices.navigation.TopLevelNavigation
+import sundravels.androidbestpractices.search.navigation.search_screen_route
+import sundravels.androidbestpractices.search.ui.SearchScreenRoute
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,10 +83,12 @@ fun AbpApp(abpAppState: AbpAppState) {
 
     Scaffold(
         topBar = {
-            //to manage empty space of topbar, when scrolled
-            if (toolBarOffsetHeightPx in -10f..0f) {
-                AbpTopBar(abpAppState)
-            }
+//            //to manage empty space of topbar, when scrolled
+//            if (toolBarOffsetHeightPx in -10f..0f) {
+//                AbpTopBar(abpAppState)
+//            }
+
+            {}
         },
         bottomBar = {
             AbpNavigation(abpAppState::navigate, abpAppState.currentDestination)
@@ -103,8 +105,22 @@ fun AbpApp(abpAppState: AbpAppState) {
             composable(homeScreenRoute) {
                 HomeScreenRoute(navHostController = abpAppState.navController)
             }
+            composable(search_screen_route){
+                SearchScreenRoute(abpAppState.navController)
+            }
             composable(favourite_screen_route) {
                 FavouriteScreenRoute(navHostController = abpAppState.navController)
+            }
+            composable("${seeAllScreenRoute}/{${seeAllType}}",
+            arguments = listOf(navArgument(seeAllType){
+                type = NavType.StringType
+            })
+            ){
+                it.arguments?.getString(seeAllType)?.let { it1 ->
+                    SeeAllScreenRoute(abpAppState.navController,seeAllScreenType = it1){
+                        abpAppState.navController.popBackStack()
+                    }
+                }
             }
             composable(
                 "${detailScreenRoute}/{${detailScreenMealId}}",
@@ -125,45 +141,10 @@ fun AbpTopBar(
     abpAppState: AbpAppState
 ) {
     val currentDestination = abpAppState.destination
+    val context = LocalContext.current
     if (currentDestination != null) {
 
-        TextField(
-            value = "",
-            onValueChange = {
 
-            },
-            leadingIcon = {
-                Icon(Icons.Default.Search, contentDescription = null, tint = Purple500)
-            },
-            readOnly = true,
-            placeholder = {
-                Text(
-                    text = "Search 'Recipes'",
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.outline,
-                        fontSize = 16.sp
-                    )
-                )
-            },
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-                .background(MaterialTheme.colorScheme.background)
-                .padding(start = 10.dp, end = 10.dp, top = 15.dp, bottom = 10.dp)
-                .shadow(
-                    elevation = 8.dp,
-                    shape = RoundedCornerShape(10.dp),
-                    ambientColor = MaterialTheme.colorScheme.onBackground
-                ),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = MaterialTheme.colorScheme.onSecondary,
-                focusedIndicatorColor = MaterialTheme.colorScheme.onSecondary,
-                unfocusedIndicatorColor =MaterialTheme.colorScheme.onSecondary,
-                disabledIndicatorColor = MaterialTheme.colorScheme.onSecondary
-            ),
-            enabled = false
-        )
     }
 }
 
@@ -174,7 +155,7 @@ fun AbpNavigation(navigate: (TopLevelNavigation) -> Unit, currentDestination: Na
             TopLevelNavigation.FAVOURITES
         )
     ) {
-        AbpBottomNavigationBar( content = {
+        AbpBottomNavigationBar(content = {
             topLevelNavigationList.forEach { bottomBarDestination ->
 
                 AbpBottomNavigationBarItem(

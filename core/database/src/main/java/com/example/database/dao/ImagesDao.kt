@@ -15,4 +15,7 @@ interface ImagesDao {
     @Query("SELECT * FROM images WHERE CASE WHEN :favouriteIds THEN id in (:favouritesList) ELSE 1 END")
     fun getAllImages(favouriteIds:Boolean = false,
                      favouritesList:Set<String>): Flow<List<DessertsEntity>>
+
+    @Query("SELECT * FROM images")
+    fun getAllImages():Flow<List<DessertsEntity>>
 }

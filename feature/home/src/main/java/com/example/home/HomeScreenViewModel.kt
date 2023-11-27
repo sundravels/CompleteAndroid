@@ -16,32 +16,35 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val dessertsRepository: DessertsRepository,
-    private val getUserImageUseCase: GetUserImageUseCase) :
+    private val getUserImageUseCase: GetUserImageUseCase
+) :
     ViewModel() {
-       private val imagesData =  dessertsRepository.getImages()
+    private val imagesData = dessertsRepository.getImages()
 
-    val feedState = dessertsRepository.mapToUserImages(getUserImageUseCase).
-         map(HomeScreenUIState::Shown)
-        .stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = HomeScreenUIState.Loading
-    )
+    val homeScreenState =
+        dessertsRepository.mapToHomeCategories(getUserImageUseCase).map(HomeScreenUIState::Success)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = HomeScreenUIState.Loading
+            )
 
-    fun addToFavourites(id:String,isFavourite:Boolean){
+    fun addToFavourites(id: String, isFavourite: Boolean) {
         viewModelScope.launch {
-            dessertsRepository.addToFavourites(id,isFavourite)
+            dessertsRepository.addToFavourites(id, isFavourite)
         }
     }
+
+
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun DessertsRepository.mapToUserImages(
+    private fun DessertsRepository.mapToHomeCategories(
         getUserImageUseCase: GetUserImageUseCase
-    ):Flow<List<DessertImages>> = imagesData.map {
+    ): Flow<HashMap<String, List<DessertImages>>> = imagesData.map {
         it.favouriteImagesIds.ifEmpty {
             null
         }
     }.flatMapLatest {
-        getUserImageUseCase(DessertsImagesQuery(null))
+        getUserImageUseCase()
     }
 
 }
