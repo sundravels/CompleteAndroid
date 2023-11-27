@@ -3,7 +3,7 @@ Complete Android is a sample  Android application 📱  built entirely using jet
 
 ## Screenshots  ## 
 
-<img src = "https://github.com/sundravels/CompleteAndroid/assets/92451715/07928e95-c247-4884-a684-09c97ead3dfb" width ="200" /> <img src = "https://github.com/sundravels/CompleteAndroid/assets/92451715/c1f2e8e6-996c-4451-8f86-497ac2c43efe" width ="200" /> <img src = "https://github.com/sundravels/CompleteAndroid/assets/92451715/fd2cf3ae-c165-4f11-9258-724078371def" width ="200" /><img src = "https://github.com/sundravels/CompleteAndroid/assets/92451715/33e441fb-dfc8-4b76-a132-f7f660ce8525" width ="200"/> 
+<img src = "https://github.com/sundravels/CompleteAndroid/assets/92451715/07928e95-c247-4884-a684-09c97ead3dfb" width ="200" />       <img src = "https://github.com/sundravels/CompleteAndroid/assets/92451715/c1f2e8e6-996c-4451-8f86-497ac2c43efe" width ="200" />       <img src = "https://github.com/sundravels/CompleteAndroid/assets/92451715/fd2cf3ae-c165-4f11-9258-724078371def" width ="200" />      <img src = "https://github.com/sundravels/CompleteAndroid/assets/92451715/33e441fb-dfc8-4b76-a132-f7f660ce8525" width ="200"/> 
 
 
 ##  About  ## 
