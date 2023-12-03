@@ -1,5 +1,5 @@
-# Complete Android #
-Complete Android is a sample  Android application 📱  built entirely using jetpack compose and kotlin.It follows modern android best pratices used in [Now in android Repository](https://github.com/android/nowinandroid)- (Kotlin,Jetpack compose, Work Manager,Data Store, Coroutines, Flow, Dagger 2/Hilt, Architecture Components, MVVM, Room, Retrofit).
+# Sugary #
+Sugary is a sample  Android application 📱  built entirely using jetpack compose and kotlin.It follows modern android best pratices used in [Now in android Repository](https://github.com/android/nowinandroid)- (Kotlin,Jetpack compose, Work Manager,Data Store, Coroutines, Flow, Dagger 2/Hilt, Architecture Components, MVVM, Room, Retrofit).
 
 ## Screenshots  ## 
 
@@ -7,7 +7,7 @@ Complete Android is a sample  Android application 📱  built entirely using jet
 
 
 ##  About  ## 
-Completed Android displays Recipes(Desserts) from the [The Meal Db](https://www.themealdb.com/api.php). Users can browse for recipes and also see the details ingredients and instructions of the recipe.
+Sugary displays Recipes(Desserts) from the [The Meal Db](https://www.themealdb.com/api.php). Users can browse for recipes and also see the details ingredients and instructions of the recipe.
 
 ##  Components Used  ## 
 
